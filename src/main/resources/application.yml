@@ -1,0 +1,11 @@
+---
+server:
+  port: 8886
+spring:
+  application:
+    name: app-development-prototype-webflux-microservice
+# configuration for spring actuator
+management:
+  health:
+    probes:
+      enabled: true
