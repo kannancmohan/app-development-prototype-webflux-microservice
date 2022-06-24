@@ -16,7 +16,7 @@ paths:
       operationId: listPets
       tags:
         - Prototype
-      x-webclient-blocking: true
+      x-webclient-blocking: true # add this to make response
       parameters:
         - name: limit
           in: query
@@ -52,7 +52,7 @@ paths:
       operationId: createPets
       tags:
         - Prototype
-      x-webclient-blocking: true
+      x-webclient-blocking: true # add this to make response
       responses:
         "201":
           description: Null response
@@ -64,7 +64,7 @@ paths:
       operationId: showPetById
       tags:
         - Prototype
-      x-webclient-blocking: true
+      x-webclient-blocking: true # add this to make response
       parameters:
         - name: petId
           in: path
@@ -96,6 +96,9 @@ components:
           type: string
         tag:
           type: string
+        dateOfBirth:
+          type: string
+          format: date
     Pets:
       type: array
       items:

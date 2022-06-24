@@ -3,6 +3,7 @@ package com.kcm.msp.dev.app.development.prototype.webflux.microservice.service.i
 import com.kcm.msp.dev.app.development.prototype.webflux.microservice.models.Pet;
 import com.kcm.msp.dev.app.development.prototype.webflux.microservice.service.PetService;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -27,15 +28,14 @@ public class PetServiceImpl implements PetService {
 
   public Flux<Pet> emitPets() {
     return Flux.interval(Duration.ofSeconds(1))
-        .map(val -> new Pet().id(val).name("petName").tag("petTag"));
+        .map(val -> new Pet().id(val).name("petName").tag("petTag").dateOfBirth(LocalDate.now()));
   }
 
   @Override
   public Mono<Pet> showPetById(final String id) {
     if (StringUtils.isBlank(id)) {
-      // throw new ItemNotFoundException("Item not found");
       return Mono.empty();
     }
-    return Mono.just(new Pet().id(123L).name("petName").tag("petTag"));
+    return Mono.just(new Pet().id(123L).name("petName").tag("petTag").dateOfBirth(LocalDate.now()));
   }
 }
