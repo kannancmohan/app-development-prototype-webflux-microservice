@@ -9,10 +9,9 @@ servers:
     variables:
       hostUrl:
         enum:
-          - 'http://localhost:8881'
-          - 'https://dev-env:8881'
-        default: 'http://localhost:8881'
-
+          - 'http://localhost:8886'
+          - 'https://dev-env:8886'
+        default: 'http://localhost:8886'
 tags:
   - name: Prototype
     description: Please use tags name starting with capitals
