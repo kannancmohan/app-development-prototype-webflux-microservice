@@ -5,7 +5,14 @@ info:
   description: APIs for fetching pet related information
 
 servers:
-  - url: http://localhost:8881
+  - url: '{hostUrl}'
+    variables:
+      hostUrl:
+        enum:
+          - 'http://localhost:8881'
+          - 'https://dev-env:8881'
+        default: 'http://localhost:8881'
+
 tags:
   - name: Prototype
     description: Please use tags name starting with capitals
@@ -18,13 +25,9 @@ paths:
         - Prototype
       x-webclient-blocking: true # add this to make response
       parameters:
-        - name: limit
-          in: query
-          description: How many items to return at one time (max 100)
-          required: false
-          schema:
-            type: integer
-            format: int32
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/email'
+        - $ref: '#/components/parameters/dob'
       responses:
         "200":
           description: A paged array of pets
@@ -53,9 +56,21 @@ paths:
       tags:
         - Prototype
       x-webclient-blocking: true # add this to make response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePetRequest'
       responses:
-        "201":
-          description: Null response
+        "200":
+          description: Created Pet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pet"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "500":
           $ref: "#/components/responses/UnexpectedError"
   /pets/{petId}:
@@ -82,7 +97,54 @@ paths:
         "500":
           $ref: "#/components/responses/UnexpectedError"
 components:
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: How many items to return at one time (max 100)
+      required: true
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 10
+    email:
+      name: owner-email
+      in: query
+      description: owner email id
+      required: false
+      schema:
+        $ref: "#/components/schemas/Email"
+    dob:
+      name: date-of-birth
+      in: query
+      description: pet date of birth (yyyy-MM-dd)
+      required: false
+      schema:
+        $ref: "#/components/schemas/DateOfBirth"
   schemas:
+    Email:
+      type: string
+      format: email
+    DateOfBirth:
+      type: string
+      format: date
+      example: 2019-08-16
+    CreatePetRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          pattern: ^(?!\s*$).+ #string that are not empty
+          example: pluto
+        tag:
+          type: string
+        dateOfBirth:
+          $ref: "#/components/schemas/DateOfBirth"
+        ownerEmail:
+          $ref: "#/components/schemas/Email"
     Pet:
       type: object
       required:
@@ -97,8 +159,9 @@ components:
         tag:
           type: string
         dateOfBirth:
-          type: string
-          format: date
+          $ref: "#/components/schemas/DateOfBirth"
+        ownerEmail:
+          $ref: "#/components/schemas/Email"
     Pets:
       type: array
       items:

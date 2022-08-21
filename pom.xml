@@ -17,13 +17,15 @@
   <properties>
     <revision>0.0.1-SNAPSHOT</revision>
     <!-- properties for openapi-server-code generation -->
-    <generate-openapi-server-code.package>app.development.prototype.webflux.microservice
+    <generate-openapi-server-code.package>app.development.prototype.webflux.microservice.server
     </generate-openapi-server-code.package>
     <generate-openapi-server-code.reactive>true</generate-openapi-server-code.reactive>
     <!-- properties for openapi-client-code generation -->
-    <generate-openapi-client-code.package>app.development.prototype.webflux.client
+    <generate-openapi-client-code.package>app.development.prototype.webflux.microservice.client
     </generate-openapi-client-code.package>
     <generate-openapi-client-code.library>webclient</generate-openapi-client-code.library>
+    <!-- This will override the variables set in openapi spec-->
+    <generate-openapi-client-code.overrideServerVariables>hostUrl=http://localhost:8886</generate-openapi-client-code.overrideServerVariables>
   </properties>
 
   <dependencies>

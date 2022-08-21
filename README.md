@@ -25,8 +25,9 @@
 ## Build and Start the application
     Build application 
         * mvn clean install
-    Build application skip integration test
-        * mvn clean install -Dskip.integration.test=true
+        * mvn clean install -Dskip.integration.test=true [To skip integration test]
+        * mvn clean install -Darchunit.skip=true [To skip archunit test]
+        * mvn clean install -Pquality-assurance-check [To include owasp check and other quality cheks]
     Run application using 
         * mvn spring-boot:run
 

@@ -1,8 +1,10 @@
 package com.kcm.msp.dev.app.development.prototype.webflux.microservice.controller;
 
-import com.kcm.msp.dev.app.development.prototype.webflux.microservice.api.PrototypeApi;
-import com.kcm.msp.dev.app.development.prototype.webflux.microservice.models.Pet;
+import com.kcm.msp.dev.app.development.prototype.webflux.microservice.server.api.PrototypeApi;
+import com.kcm.msp.dev.app.development.prototype.webflux.microservice.server.models.CreatePetRequest;
+import com.kcm.msp.dev.app.development.prototype.webflux.microservice.server.models.Pet;
 import com.kcm.msp.dev.app.development.prototype.webflux.microservice.service.PetService;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,11 @@ public class PrototypeController implements PrototypeApi {
   private final PetService petService;
 
   @Override
-  public Mono<ResponseEntity<Flux<Pet>>> listPets(Integer limit, ServerWebExchange exchange) {
+  public Mono<ResponseEntity<Flux<Pet>>> listPets(
+      final Integer limit,
+      final String ownerEmail,
+      final LocalDate dateOfBirth,
+      final ServerWebExchange exchange) {
     final Flux<Pet> petFlux = petService.listPets(limit);
     return petFlux
         .hasElements()
@@ -31,10 +37,18 @@ public class PrototypeController implements PrototypeApi {
   }
 
   @Override
-  public Mono<ResponseEntity<Pet>> showPetById(String petId, ServerWebExchange exchange) {
+  public Mono<ResponseEntity<Pet>> showPetById(
+      final String petId, final ServerWebExchange exchange) {
     return petService
         .showPetById(petId)
         .map(pet -> ResponseEntity.ok().body(pet))
         .defaultIfEmpty(ResponseEntity.notFound().build());
+  }
+
+  @Override
+  public Mono<ResponseEntity<Pet>> createPets(
+      final Mono<CreatePetRequest> createPetRequest, ServerWebExchange exchange) {
+    // TODO
+    return Mono.empty();
   }
 }
